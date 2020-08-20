@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
     private ConstraintLayout rootLayout;
     private Spinner inputLanguageSpinner;
     private Spinner outputLanguageSpinner;
-    private WebView webView;
     private EditText inputTextView;
     private Button translateButton;
     private QueryUtils queryUtils = new QueryUtils();
@@ -33,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
         rootLayout = findViewById(R.id.constraint_layout);
         inputLanguageSpinner =  findViewById(R.id.input_language_spinner);
         outputLanguageSpinner =  findViewById(R.id.output_language_spinner);
-        webView = findViewById(R.id.web_view);
         inputTextView = findViewById(R.id.input_text_view);
         translateButton = findViewById(R.id.translate_button);
 
@@ -48,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (checkUserInput(inputText) && checkNetworkConnection()) {
                     String url = queryUtils.buildUrl(inputText, inputLanguage, outputLanguage);
-                    webView.loadUrl(url);
+//                    webView.loadUrl(url);
                 }
             }
         });
