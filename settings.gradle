@@ -1,0 +1,2 @@
+rootProject.name='Multitran Expanded'
+include ':app'

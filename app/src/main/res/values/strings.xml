@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Multitran Expanded</string>
+    <string name="name">Введите текст</string>
+    <string name="translate_button">Перевести</string>
+
+    <string-array name="languages">
+        <item>ENG</item>
+        <item>RUS</item>
+        <item>DEU</item>
+        <item>FRA</item>
+    </string-array>
+
+</resources>
