@@ -6,23 +6,30 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import com.example.android.multitranexpanded.QueryUtils;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private ConstraintLayout rootLayout;
     private Spinner inputLanguageSpinner;
     private Spinner outputLanguageSpinner;
     private EditText inputTextView;
     private Button translateButton;
     private QueryUtils queryUtils = new QueryUtils();
+    private ListView translationsListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         outputLanguageSpinner =  findViewById(R.id.output_language_spinner);
         inputTextView = findViewById(R.id.input_text_view);
         translateButton = findViewById(R.id.translate_button);
+        translationsListView = findViewById(R.id.translations_list_view);
 
         setupSpinners();
 
@@ -46,11 +54,12 @@ public class MainActivity extends AppCompatActivity {
 
                 if (checkUserInput(inputText) && checkNetworkConnection()) {
                     String url = queryUtils.buildUrl(inputText, inputLanguage, outputLanguage);
-//                    webView.loadUrl(url);
+
+                    new AsyncHtmlParser().execute(url);
+
                 }
             }
         });
-
 
     }
 
@@ -91,6 +100,26 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return isConnected;
+    }
+
+    public class AsyncHtmlParser  extends AsyncTask<String, Void, Void> {
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            String url = strings[0];
+            queryUtils.parseHtml(url);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            //updating ListView
+            ArrayList<String> translationsList = queryUtils.getTranslationsList();
+            ArrayAdapter<String> adapter
+                    = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, translationsList);
+            translationsListView.setAdapter(adapter);
+        }
     }
 
 
