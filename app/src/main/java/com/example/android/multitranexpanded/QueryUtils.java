@@ -59,19 +59,26 @@ public class QueryUtils {
                     .userAgent("Chrome/4.0.249.0 Safari/532.5")
                     .referrer("http://www.google.com")
                     .get();
-            Elements translationsFromHtml = document
+            Elements dataFromHtml = document
                     .select("div.middle_col")
                     .select("table")
                     .select("[width=100%]")
                     .select("td.trans")
                     .select("a[href]");
 
+            for (int i = 0; i < dataFromHtml.size(); i++) {
+                Element element = dataFromHtml.get(i);
+                if (element.hasAttr("title") ) {
+                    dataFromHtml.remove(i);
+                }
+            }
+
             translationsList.clear();
 
-            for (int i = 0; i < translationsFromHtml.size(); i++) {
-            int number = i+1;
-            String translation = number + ") " + translationsFromHtml.get(i).text();
-            translationsList.add(translation);
+            for (int i = 0; i < dataFromHtml.size(); i++) {
+                int number = i + 1;
+                String translation = number + ") " + dataFromHtml.get(i).text();
+                translationsList.add(translation);
             }
 
         } catch (IOException e) {
