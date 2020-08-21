@@ -8,15 +8,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
-import com.example.android.multitranexpanded.QueryUtils;
+
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -72,7 +70,9 @@ public class MainActivity extends AppCompatActivity {
         outputLanguageSpinner.setAdapter(adapter);
 
         //setting default input language (russian)
-        inputLanguageSpinner.setSelection(1);
+        int spinnerItemNumber = new Languages()
+                .getSpinnerItemNumber(Languages.russian);
+        inputLanguageSpinner.setSelection(spinnerItemNumber);
     }
 
     private boolean checkUserInput (String inputText) {
@@ -82,21 +82,21 @@ public class MainActivity extends AppCompatActivity {
          userInputPresence = true;
      }
      else {
-         Snackbar.make(rootLayout, "Введите слово, которое хотите перевести", Snackbar.LENGTH_SHORT).show();
+         Snackbar.make(rootLayout, R.string.snackbar_input_request, Snackbar.LENGTH_SHORT).show();
      }
 
      return userInputPresence;
     }
 
     private boolean checkNetworkConnection() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
         boolean isConnected = false;
         if (activeNetwork != null && activeNetwork.isConnectedOrConnecting()) {
             isConnected = true;
         }
         else {
-            Snackbar.make(rootLayout, "Нет интернет соединения", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(rootLayout, R.string.snackbar_no_internet_connection, Snackbar.LENGTH_SHORT).show();
         }
 
         return isConnected;

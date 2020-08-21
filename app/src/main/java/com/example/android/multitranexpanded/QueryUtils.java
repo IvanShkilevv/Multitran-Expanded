@@ -18,6 +18,7 @@ public class QueryUtils {
     private static final String LOG_TAG = QueryUtils.class.getSimpleName();
     private static final String DEFAULT_URL = "https://www.multitran.com/m.exe";
     private ArrayList <String> translationsList = new ArrayList<>();
+    private Languages languages = new Languages();
 
     public ArrayList <String> getTranslationsList () {
         return translationsList;
@@ -27,8 +28,8 @@ public class QueryUtils {
         Uri baseUri = Uri.parse(DEFAULT_URL);
         Uri.Builder uriBuilder = baseUri.buildUpon();
 
-        int inputLanguageId = getLanguageId(inputLanguage);
-        int outputLanguageId = getLanguageId(outputLanguage);
+        int inputLanguageId = languages.getLanguageId(inputLanguage);
+        int outputLanguageId = languages.getLanguageId(outputLanguage);
 
         if (inputLanguageId > 0 && outputLanguageId > 0) {
             uriBuilder.appendQueryParameter("l1", String.valueOf(inputLanguageId));
@@ -37,19 +38,6 @@ public class QueryUtils {
         }
 
         return uriBuilder.toString();
-    }
-
-    private int getLanguageId (String languageIdentifier) {
-        int languageId;
-        switch (languageIdentifier) {
-            case "ENG": languageId = 1; break;
-            case "RUS": languageId = 2; break;
-            case "DEU": languageId = 3; break;
-            case "FRA": languageId = 4; break;
-            default: languageId = -1; break;
-        }
-
-        return languageId;
     }
 
     public String parseHtml (String url) {
