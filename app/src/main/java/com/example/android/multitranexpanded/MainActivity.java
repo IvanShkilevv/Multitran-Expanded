@@ -6,7 +6,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -17,9 +16,7 @@ import android.widget.Spinner;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.ArrayList;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AsyncHtmlParserDelegate{
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private ConstraintLayout rootLayout;
     private Spinner inputLanguageSpinner;
@@ -27,12 +24,15 @@ public class MainActivity extends AppCompatActivity {
     private EditText inputTextView;
     private Button translateButton;
     private QueryUtils queryUtils = new QueryUtils();
+    private AsyncHtmlParser htmlParser;
     private ListView translationsListView;
+    public static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        MainActivity.context = getApplicationContext();
 
         rootLayout = findViewById(R.id.constraint_layout);
         inputLanguageSpinner =  findViewById(R.id.input_language_spinner);
@@ -46,16 +46,7 @@ public class MainActivity extends AppCompatActivity {
         translateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String inputText = inputTextView.getText().toString();
-                String inputLanguage = inputLanguageSpinner.getSelectedItem().toString();
-                String outputLanguage = outputLanguageSpinner.getSelectedItem().toString();
-
-                if (checkUserInput(inputText) && checkNetworkConnection()) {
-                    String url = queryUtils.buildUrl(inputText, inputLanguage, outputLanguage);
-
-                    new AsyncHtmlParser().execute(url);
-
-                }
+            translate();
             }
         });
 
@@ -102,27 +93,25 @@ public class MainActivity extends AppCompatActivity {
         return isConnected;
     }
 
-    public class AsyncHtmlParser  extends AsyncTask<String, Void, Void> {
-
-        @Override
-        protected Void doInBackground(String... strings) {
-            String url = strings[0];
-            queryUtils.parseHtml(url);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            //updating ListView
-            ArrayList<String> translationsList = queryUtils.getTranslationsList();
-            ArrayAdapter<String> adapter
-                    = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, translationsList);
-            translationsListView.setAdapter(adapter);
-        }
+    @Override
+    public void adapterDidSet(ArrayAdapter<String> adapter) {
+        translationsListView.setAdapter(adapter);
+    }
+    public static Context getAppContext() {
+        return MainActivity.context;
     }
 
+    private void translate() {
+        String inputText = inputTextView.getText().toString();
+        String inputLanguage = inputLanguageSpinner.getSelectedItem().toString();
+        String outputLanguage = outputLanguageSpinner.getSelectedItem().toString();
 
-
+        if (checkUserInput(inputText) && checkNetworkConnection()) {
+            String url = queryUtils.buildUrl(inputText, inputLanguage, outputLanguage);
+            htmlParser = new AsyncHtmlParser();
+            htmlParser.delegateInstance = this;
+            htmlParser.execute(url);
+        }
+    }
 
 }
