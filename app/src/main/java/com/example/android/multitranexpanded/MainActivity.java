@@ -16,7 +16,7 @@ import android.widget.Spinner;
 
 import com.google.android.material.snackbar.Snackbar;
 
-public class MainActivity extends AppCompatActivity implements AsyncHtmlParserDelegate{
+public class MainActivity extends AppCompatActivity implements AsyncHtmlParserDelegate {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private ConstraintLayout rootLayout;
     private Spinner inputLanguageSpinner;
@@ -35,8 +35,8 @@ public class MainActivity extends AppCompatActivity implements AsyncHtmlParserDe
         MainActivity.context = getApplicationContext();
 
         rootLayout = findViewById(R.id.constraint_layout);
-        inputLanguageSpinner =  findViewById(R.id.input_language_spinner);
-        outputLanguageSpinner =  findViewById(R.id.output_language_spinner);
+        inputLanguageSpinner = findViewById(R.id.input_language_spinner);
+        outputLanguageSpinner = findViewById(R.id.output_language_spinner);
         inputTextView = findViewById(R.id.input_text_view);
         translateButton = findViewById(R.id.translate_button);
         translationsListView = findViewById(R.id.translations_list_view);
@@ -46,13 +46,13 @@ public class MainActivity extends AppCompatActivity implements AsyncHtmlParserDe
         translateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            translate();
+                translate();
             }
         });
 
     }
 
-    private void setupSpinners () {
+    private void setupSpinners() {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.languages, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -66,17 +66,16 @@ public class MainActivity extends AppCompatActivity implements AsyncHtmlParserDe
         inputLanguageSpinner.setSelection(spinnerItemNumber);
     }
 
-    private boolean checkUserInput (String inputText) {
-     boolean userInputPresence = false;
+    private boolean checkUserInput(String inputText) {
+        boolean userInputPresence = false;
 
-     if (! inputText.isEmpty()) {
-         userInputPresence = true;
-     }
-     else {
-         Snackbar.make(rootLayout, R.string.snackbar_input_request, Snackbar.LENGTH_SHORT).show();
-     }
+        if (!inputText.isEmpty()) {
+            userInputPresence = true;
+        } else {
+            Snackbar.make(rootLayout, R.string.snackbar_input_request, Snackbar.LENGTH_SHORT).show();
+        }
 
-     return userInputPresence;
+        return userInputPresence;
     }
 
     private boolean checkNetworkConnection() {
@@ -85,8 +84,7 @@ public class MainActivity extends AppCompatActivity implements AsyncHtmlParserDe
         boolean isConnected = false;
         if (activeNetwork != null && activeNetwork.isConnectedOrConnecting()) {
             isConnected = true;
-        }
-        else {
+        } else {
             Snackbar.make(rootLayout, R.string.snackbar_no_internet_connection, Snackbar.LENGTH_SHORT).show();
         }
 
@@ -97,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements AsyncHtmlParserDe
     public void adapterDidSet(ArrayAdapter<String> adapter) {
         translationsListView.setAdapter(adapter);
     }
+
     public static Context getAppContext() {
         return MainActivity.context;
     }

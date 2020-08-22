@@ -17,10 +17,10 @@ import java.util.ArrayList;
 public class QueryUtils {
     private static final String LOG_TAG = QueryUtils.class.getSimpleName();
     private static final String DEFAULT_URL = "https://www.multitran.com/m.exe";
-    private ArrayList <String> translationsList = new ArrayList<>();
+    private ArrayList<String> translationsList = new ArrayList<>();
     private Languages languages = new Languages();
 
-    public ArrayList <String> getTranslationsList () {
+    public ArrayList<String> getTranslationsList() {
         return translationsList;
     }
 
@@ -40,7 +40,7 @@ public class QueryUtils {
         return uriBuilder.toString();
     }
 
-    public String parseHtml (String url) {
+    public String parseHtml(String url) {
         Log.d(LOG_TAG, "parseHtml started");
         try {
             Document document = Jsoup.connect(url)
@@ -56,7 +56,7 @@ public class QueryUtils {
 
             for (int i = 0; i < dataFromHtml.size(); i++) {
                 Element element = dataFromHtml.get(i);
-                if (element.hasAttr("title") || element.text().contains("http")  || element.text().contains("html")) {
+                if (element.hasAttr("title") || element.text().contains("http") || element.text().contains("html")) {
                     dataFromHtml.remove(i);
                 }
             }
@@ -75,8 +75,5 @@ public class QueryUtils {
 
         return null;
     }
-
-
-
 
 }
