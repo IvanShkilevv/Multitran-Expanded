@@ -56,7 +56,7 @@ public class QueryUtils {
 
             for (int i = 0; i < dataFromHtml.size(); i++) {
                 Element element = dataFromHtml.get(i);
-                if (element.hasAttr("title") ) {
+                if (element.hasAttr("title") || element.text().contains("http")  || element.text().contains("html")) {
                     dataFromHtml.remove(i);
                 }
             }
