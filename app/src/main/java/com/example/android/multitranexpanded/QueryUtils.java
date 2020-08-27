@@ -1,10 +1,7 @@
 package com.example.android.multitranexpanded;
 
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

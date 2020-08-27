@@ -80,7 +80,10 @@ public class MainActivity extends AppCompatActivity implements AsyncHtmlParserDe
 
     private boolean checkNetworkConnection() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+        NetworkInfo activeNetwork = null;
+        if (connectivityManager != null) {
+            activeNetwork = connectivityManager.getActiveNetworkInfo();
+        }
         boolean isConnected = false;
         if (activeNetwork != null && activeNetwork.isConnectedOrConnecting()) {
             isConnected = true;
