@@ -1,2 +1,2 @@
 # Multitran Expanded
-Dictionary app. Uses Jsoup.
+Dictionary app, supports languages: Russian, English, French, German . Uses Jsoup.
