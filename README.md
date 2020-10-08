@@ -1,1 +1,2 @@
-Multitran Expanded
+# Multitran Expanded
+Dictionary app. Uses Jsoup.
